@@ -17,7 +17,7 @@ export class WikipediaCommand implements ISlashCommand {
     constructor(private readonly app: WikipediaApp) { }
     public async executor(context: SlashCommandContext, read: IRead, modify: IModify, http: IHttp, _persistence: IPersistence): Promise<void> {
         try {
-            const [command, ...params] = context.getArguments();
+            const [ command ] = context.getArguments();
 
             switch (command) {
                 case CommandsEnum.RANDOM:

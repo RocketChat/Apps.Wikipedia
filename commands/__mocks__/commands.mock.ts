@@ -1,4 +1,4 @@
-import { IModify, IRead } from '@rocket.chat/apps-engine/definition/accessors';
+import { IHttp, IModify, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { SlashCommandContext } from '@rocket.chat/apps-engine/definition/slashcommands';
 import { WikipediaApp } from 'WikipediaApp';
 
@@ -37,14 +37,56 @@ const userMock = {
     appId: '678',
 };
 
-const commandsMockParams: { app: WikipediaApp, context: SlashCommandContext, read: IRead, modify: IModify } = {
+const article = {
+    data: {
+        type: 'standard',
+        title: 'Rocket.Chat',
+        displaytitle: 'Rocket.Chat',
+        namespace: {
+            id: 0,
+            text: ''
+        },
+        wikibase_item: 'Q24050001',
+        titles: {
+            canonical: 'Rocket.Chat',
+            normalized: 'Rocket.Chat',
+            display: 'Rocket.Chat'
+        },
+        pageid: 69136143,
+        lang: 'en',
+        dir: 'ltr',
+        revision: '1053456870',
+        tid: 'c2ce39f0-448f-11ec-ba8c-6f33854dc8d4',
+        timestamp: '2021-11-04T00:46:48Z',
+        content_urls: {
+            desktop: {
+            page: 'https://en.wikipedia.org/wiki/Rocket.Chat',
+            revisions: 'https://en.wikipedia.org/wiki/Rocket.Chat?action=history',
+            edit: 'https://en.wikipedia.org/wiki/Rocket.Chat?action=edit',
+            talk: 'https://en.wikipedia.org/wiki/Talk:Rocket.Chat'
+            },
+            mobile: {
+            page: 'https://en.m.wikipedia.org/wiki/Rocket.Chat',
+            revisions: 'https://en.m.wikipedia.org/wiki/Special:History/Rocket.Chat',
+            edit: 'https://en.m.wikipedia.org/wiki/Rocket.Chat?action=edit',
+            talk: 'https://en.m.wikipedia.org/wiki/Talk:Rocket.Chat'
+            }
+        },
+        extract: 'Rocket.chat is an open-source team chat platform. It services include collaboration tools, conferences, customer service, and chat features such as inline code snippets with syntax highlighting, inline images and formatting support through Markdown.',
+        extract_html: '<p><b>Rocket.chat</b> is an open-source team chat platform. It services include collaboration tools, conferences, customer service, and chat features such as inline code snippets with syntax highlighting, inline images and formatting support through Markdown.</p>'
+    }
+}
+
+const args = ['search', 'en', 'rocket.chat']
+
+const commandsMockParams: { app: WikipediaApp, context: SlashCommandContext, read: IRead, modify: IModify, http: IHttp } = {
     app: {
         initialize: jest.fn(),
     } as unknown as WikipediaApp,
     context: {
-        getSender: jest.fn().mockReturnValueOnce(userMock),
+        getSender: jest.fn().mockReturnValue(userMock),
         getRoom: jest.fn().mockReturnValue(roomMock),
-        getArguments: jest.fn(),
+        getArguments: jest.fn().mockReturnValue(args),
         getThreadId: jest.fn(),
         getTriggerId: jest.fn(),
     } as unknown as SlashCommandContext,
@@ -68,6 +110,13 @@ const commandsMockParams: { app: WikipediaApp, context: SlashCommandContext, rea
         getUiController: jest.fn(),
         getScheduler: jest.fn(),
     },
+    http: {
+        get: jest.fn().mockResolvedValue(article),
+        post: jest.fn(),
+        put: jest.fn(), 
+        del: jest.fn(), 
+        patch: jest.fn(),
+    }
 };
 
 export {
