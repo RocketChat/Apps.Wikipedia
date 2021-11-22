@@ -17,5 +17,3 @@ Integration between Rocket.Chat and the Wikipedia API
     - `user_password` is the password of your admin user.
 
     For more info refer [this](https://rocket.chat/docs/developer-guides/developing-apps/getting-started/) guide
-
-Below you will see a gif to showing how the thing works.
