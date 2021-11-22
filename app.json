@@ -1,0 +1,36 @@
+{
+    "id": "121a32f6-e35b-458f-9108-ad6dedcf00f8",
+    "version": "0.0.1",
+    "requiredApiVersion": "^1.19.0",
+    "iconFile": "icon.png",
+    "author": {
+        "name": "Rocket Chat",
+        "homepage": "rocket.chat",
+        "support": "rocket.chat"
+    },
+    "name": "Wikipedia",
+    "nameSlug": "wikipedia",
+    "classFile": "WikipediaApp.ts",
+    "description": "Wikipedia Search App",
+    "permissions": [
+        {
+            "name": "networking"
+        },
+        {
+            "name": "api"
+        },
+        {
+            "name": "message.write"
+        },
+        {
+            "name": "slashcommand"
+        },
+        {
+            "name": "persistence"
+        },
+        {
+            "name": "ui.interact"
+        }
+    ],
+    "implements": []
+}
