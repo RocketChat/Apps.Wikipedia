@@ -1,6 +1,6 @@
 import { IHttp, IModify, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { SlashCommandContext } from '@rocket.chat/apps-engine/definition/slashcommands';
-import { WikipediaApp } from 'WikipediaApp';
+import { WikipediaApp } from '../WikipediaApp';
 
 const roomMock = {
     id: '123',
@@ -44,13 +44,13 @@ const article = {
         displaytitle: 'Rocket.Chat',
         namespace: {
             id: 0,
-            text: ''
+            text: '',
         },
         wikibase_item: 'Q24050001',
         titles: {
             canonical: 'Rocket.Chat',
             normalized: 'Rocket.Chat',
-            display: 'Rocket.Chat'
+            display: 'Rocket.Chat',
         },
         pageid: 69136143,
         lang: 'en',
@@ -63,21 +63,21 @@ const article = {
             page: 'https://en.wikipedia.org/wiki/Rocket.Chat',
             revisions: 'https://en.wikipedia.org/wiki/Rocket.Chat?action=history',
             edit: 'https://en.wikipedia.org/wiki/Rocket.Chat?action=edit',
-            talk: 'https://en.wikipedia.org/wiki/Talk:Rocket.Chat'
+            talk: 'https://en.wikipedia.org/wiki/Talk:Rocket.Chat',
             },
             mobile: {
             page: 'https://en.m.wikipedia.org/wiki/Rocket.Chat',
             revisions: 'https://en.m.wikipedia.org/wiki/Special:History/Rocket.Chat',
             edit: 'https://en.m.wikipedia.org/wiki/Rocket.Chat?action=edit',
-            talk: 'https://en.m.wikipedia.org/wiki/Talk:Rocket.Chat'
-            }
+            talk: 'https://en.m.wikipedia.org/wiki/Talk:Rocket.Chat',
+            },
         },
         extract: 'Rocket.chat is an open-source team chat platform. It services include collaboration tools, conferences, customer service, and chat features such as inline code snippets with syntax highlighting, inline images and formatting support through Markdown.',
-        extract_html: '<p><b>Rocket.chat</b> is an open-source team chat platform. It services include collaboration tools, conferences, customer service, and chat features such as inline code snippets with syntax highlighting, inline images and formatting support through Markdown.</p>'
-    }
-}
+        extract_html: '<p><b>Rocket.chat</b> is an open-source team chat platform. It services include collaboration tools, conferences, customer service, and chat features such as inline code snippets with syntax highlighting, inline images and formatting support through Markdown.</p>',
+    },
+};
 
-const args = ['search', 'en', 'rocket.chat']
+const args = ['search', 'en', 'rocket.chat'];
 
 const commandsMockParams: { app: WikipediaApp, context: SlashCommandContext, read: IRead, modify: IModify, http: IHttp } = {
     app: {
@@ -113,10 +113,10 @@ const commandsMockParams: { app: WikipediaApp, context: SlashCommandContext, rea
     http: {
         get: jest.fn().mockResolvedValue(article),
         post: jest.fn(),
-        put: jest.fn(), 
-        del: jest.fn(), 
+        put: jest.fn(),
+        del: jest.fn(),
         patch: jest.fn(),
-    }
+    },
 };
 
 export {

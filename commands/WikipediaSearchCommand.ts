@@ -1,7 +1,7 @@
-import { checkIfIsValidWPcodes } from '@helper/Util';
-import { notifyUser } from '@lib/message';
 import { IHttp, IModify, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { SlashCommandContext } from '@rocket.chat/apps-engine/definition/slashcommands';
+import { checkIfIsValidWPcodes } from '../helper/Util';
+import { notifyUser, sendMessage } from '../lib/message';
 import { WikipediaApp } from '../WikipediaApp';
 
 class WikipediaSearchCommand {
@@ -21,7 +21,7 @@ class WikipediaSearchCommand {
         argsArr.shift();
 
         const wpcode = argsArr.shift();
-        const isValidWpCode = checkIfIsValidWPcodes(wpcode as string)
+        const isValidWpCode = checkIfIsValidWPcodes(wpcode as string);
 
         if (!isValidWpCode) {
             text = 'Please, inform a valid wp code';
@@ -36,12 +36,15 @@ class WikipediaSearchCommand {
         const { data } = await http.get(url);
 
         if (data) {
-            text = data.type === 'disambiguation' ? 'Please, be more specific' : data.extract;
+            text = data.type === 'disambiguation' ?
+            'Please, be more specific' :
+            `${data.extract} \n\n` +
+            `Source: ${data.content_urls.desktop.page}`;
         } else {
             text = 'Sorry, no results found';
         }
 
-        await notifyUser({ app, read, modify, room, user, text });
+        await sendMessage({ app, read, modify, room, user, text });
 
     }
 

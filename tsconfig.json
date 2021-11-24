@@ -10,16 +10,10 @@
         "noImplicitReturns": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "baseUrl": "./",
-        "paths": {
-            "@commands/*": ["commands/*"],
-            "@dictionary/*": ["dictionary/*"],
-            "@enum/*": ["enum/*"],
-            "@helper/*": ["helper/*"],
-            "@lib/*": ["lib/*"],
-        }
+        "types": ["jest"],
     },
     "include": [
-        "**/*.ts"
-    ]
+        "**/*.ts",
+    ],
+    "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts",  "**/*.mock.ts"],
 }

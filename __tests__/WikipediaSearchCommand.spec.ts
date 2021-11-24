@@ -1,25 +1,27 @@
 jest.autoMockOff();
 const notifyUser = jest.fn();
-jest.mock('@lib/message', () => ({
-    notifyUser,
+const sendMessage = jest.fn();
+jest.mock('../lib/message', () => ({
+  notifyUser,
+  sendMessage,
 }));
-import { commandsMockParams, roomMock, userMock } from '@commands/__mocks__/commands.mock';
-import { wikipediaSearchCommand } from '@commands/WikipediaSearchCommand';
 
+import { commandsMockParams, roomMock, userMock } from '../__mocks__/commands.mock';
+import { wikipediaSearchCommand } from '../commands/WikipediaSearchCommand';
 describe('WikipediaRandomCommand', () => {
 
     test('should set text with the right values', async () => {
-       commandsMockParams.context.getArguments = jest.fn().mockReturnValue(['search', 'en', 'rocket.chat']);
+       commandsMockParams.context.getArguments = jest.fn().mockReturnValue(['search', 'en', 'rocket.chat']) as () => Array<string>;
        await wikipediaSearchCommand.run(commandsMockParams);
        const { app, modify, read } = commandsMockParams;
        expect(commandsMockParams.http.get).toBeCalledWith('https://en.wikipedia.org/api/rest_v1/page/summary/rocket.chat?redirect=true');
-       expect(notifyUser).toBeCalledWith({ 
+       expect(notifyUser).toBeCalledWith({
          app,
          read,
          modify,
          room: roomMock,
-         text: 'Rocket.chat is an open-source team chat platform. It services include collaboration tools, ' + 
-         'conferences, customer service, and chat features such as inline code snippets with syntax highlighting, ' + 
+         text: 'Rocket.chat is an open-source team chat platform. It services include collaboration tools, ' +
+         'conferences, customer service, and chat features such as inline code snippets with syntax highlighting, ' +
          'inline images and formatting support through Markdown.',
          user: userMock,
        });
@@ -32,7 +34,7 @@ describe('WikipediaRandomCommand', () => {
        await wikipediaSearchCommand.run(commandsMockParams);
        const { app, modify, read } = commandsMockParams;
        expect(commandsMockParams.http.get).toBeCalledWith('https://fr.wikipedia.org/api/rest_v1/page/summary/quelque?redirect=true');
-       expect(notifyUser).toBeCalledWith({ 
+       expect(notifyUser).toBeCalledWith({
          app,
          read,
          modify,
@@ -46,7 +48,7 @@ describe('WikipediaRandomCommand', () => {
       commandsMockParams.context.getArguments = jest.fn().mockReturnValue(['random', 't5']);
       await wikipediaSearchCommand.run(commandsMockParams);
       const { app, modify, read } = commandsMockParams;
-       expect(notifyUser).toBeCalledWith({ 
+      expect(notifyUser).toBeCalledWith({
          app,
          read,
          modify,

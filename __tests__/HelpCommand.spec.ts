@@ -1,10 +1,11 @@
 jest.autoMockOff();
 const notifyUser = jest.fn();
-jest.mock('@lib/message', () => ({
+jest.mock('../lib/message', () => ({
     notifyUser,
 }));
-import { commandsMockParams, roomMock, userMock } from '@commands/__mocks__/commands.mock';
-import { helpCommand } from '@commands/HelpCommand';
+
+import { commandsMockParams, roomMock, userMock } from '../__mocks__/commands.mock';
+import { helpCommand } from '../commands/HelpCommand';
 
 describe('HelpCommand', () => {
     test('should set tex with the right values', async () => {

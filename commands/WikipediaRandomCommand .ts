@@ -1,7 +1,7 @@
-import { checkIfIsValidWPcodes } from '@helper/Util';
-import { notifyUser } from '@lib/message';
 import { IHttp, IModify, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { SlashCommandContext } from '@rocket.chat/apps-engine/definition/slashcommands';
+import { checkIfIsValidWPcodes } from '../helper/Util';
+import { notifyUser, sendMessage } from '../lib/message';
 import { WikipediaApp } from '../WikipediaApp';
 
 class WikipediaRandomCommand  {
@@ -10,7 +10,7 @@ class WikipediaRandomCommand  {
         context: SlashCommandContext,
         read: IRead,
         http: IHttp,
-        modify: IModify
+        modify: IModify,
     }): Promise<void> {
         const room = context.getRoom();
         const user = context.getSender();
@@ -32,13 +32,13 @@ class WikipediaRandomCommand  {
 
         const url = `https://${wpcode}.wikipedia.org/api/rest_v1/page/random/summary`;
 
-        const { data: { extract } } = await http.get(url);
+        const { data: { extract, content_urls: { desktop: page } } } = await http.get(url);
 
-        text = extract;
+        text = `${extract} \n\n` + `Source: ${page}`;
 
-        await notifyUser({ app, read, modify, room, user, text });
+        await sendMessage({ app, read, modify, room, user, text });
 
     }
 }
 
-export const wikipediaRandomCommand = new WikipediaRandomCommand ();
+export const wikipediaRandomCommand = new WikipediaRandomCommand();

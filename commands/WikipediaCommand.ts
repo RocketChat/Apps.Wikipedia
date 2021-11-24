@@ -1,12 +1,12 @@
-import { helpCommand } from '@commands/HelpCommand';
-import { wikipediaRandomCommand } from '@commands/WikipediaRandomCommand ';
-import { wikipediaSearchCommand } from '@commands/WikipediaSearchCommand';
-import { CommandsEnum } from '@enum/Commands';
-import { ErrorsEnum } from '@enum/Errors';
-import { notifyUser } from '@lib/message';
 import { IHttp, IModify, IPersistence, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { ISlashCommand, SlashCommandContext } from '@rocket.chat/apps-engine/definition/slashcommands';
+import { CommandsEnum } from '../enum/Commands';
+import { ErrorsEnum } from '../enum/Errors';
+import { notifyUser } from '../lib/message';
 import { WikipediaApp } from '../WikipediaApp';
+import { helpCommand } from './HelpCommand';
+import { wikipediaRandomCommand } from './WikipediaRandomCommand ';
+import { wikipediaSearchCommand } from './WikipediaSearchCommand';
 
 export class WikipediaCommand implements ISlashCommand {
     public command = 'wikipedia';
@@ -15,7 +15,13 @@ export class WikipediaCommand implements ISlashCommand {
     public providesPreview = false;
 
     constructor(private readonly app: WikipediaApp) { }
-    public async executor(context: SlashCommandContext, read: IRead, modify: IModify, http: IHttp, _persistence: IPersistence): Promise<void> {
+    public async executor(
+        context: SlashCommandContext,
+        read: IRead,
+        modify: IModify,
+        http: IHttp,
+        persistence: IPersistence,
+    ): Promise<void> {
         try {
             const [ command ] = context.getArguments();
 

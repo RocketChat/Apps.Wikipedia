@@ -1,10 +1,15 @@
-import { notifyUser } from '@lib/message';
 import { IModify, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { SlashCommandContext } from '@rocket.chat/apps-engine/definition/slashcommands';
+import { notifyUser } from '../lib/message';
 import { WikipediaApp } from '../WikipediaApp';
 
 class HelpCommand {
-    public async run({ app, context, read, modify }: { app: WikipediaApp, context: SlashCommandContext, read: IRead, modify: IModify }): Promise<void> {
+    public async run({ app, context, read, modify }: {
+        app: WikipediaApp,
+        context: SlashCommandContext,
+        read: IRead,
+        modify: IModify,
+    }): Promise<void> {
         const room = context.getRoom();
         const user = context.getSender();
 

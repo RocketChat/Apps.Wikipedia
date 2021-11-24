@@ -1,10 +1,11 @@
 jest.autoMockOff();
 const notifyUser = jest.fn();
-jest.mock('@lib/message', () => ({
+jest.mock('../lib/message', () => ({
     notifyUser,
 }));
-import { commandsMockParams, roomMock, userMock } from '@commands/__mocks__/commands.mock';
-import { wikipediaRandomCommand } from '@commands/WikipediaRandomCommand ';
+
+import { commandsMockParams, roomMock, userMock } from '../__mocks__/commands.mock';
+import { wikipediaRandomCommand } from '../commands/WikipediaRandomCommand ';
 
 describe('WikipediaRandomCommand', () => {
 
@@ -13,13 +14,13 @@ describe('WikipediaRandomCommand', () => {
        await wikipediaRandomCommand.run(commandsMockParams);
        const { app, modify, read } = commandsMockParams;
        expect(commandsMockParams.http.get).toBeCalledWith('https://en.wikipedia.org/api/rest_v1/page/random/summary');
-       expect(notifyUser).toBeCalledWith({ 
+       expect(notifyUser).toBeCalledWith({
          app,
          read,
          modify,
          room: roomMock,
-         text: 'Rocket.chat is an open-source team chat platform. It services include collaboration tools, ' + 
-         'conferences, customer service, and chat features such as inline code snippets with syntax highlighting, ' + 
+         text: 'Rocket.chat is an open-source team chat platform. It services include collaboration tools, ' +
+         'conferences, customer service, and chat features such as inline code snippets with syntax highlighting, ' +
          'inline images and formatting support through Markdown.',
          user: userMock,
        });
@@ -29,7 +30,7 @@ describe('WikipediaRandomCommand', () => {
       commandsMockParams.context.getArguments = jest.fn().mockReturnValue(['random', 't5']);
       await wikipediaRandomCommand.run(commandsMockParams);
       const { app, modify, read } = commandsMockParams;
-       expect(notifyUser).toBeCalledWith({ 
+      expect(notifyUser).toBeCalledWith({
          app,
          read,
          modify,
@@ -37,5 +38,5 @@ describe('WikipediaRandomCommand', () => {
          text: 'Please, inform a valid wp code',
          user: userMock,
        });
-    })
+    });
 });
