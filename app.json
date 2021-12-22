@@ -26,9 +26,6 @@
             "name": "slashcommand"
         },
         {
-            "name": "persistence"
-        },
-        {
             "name": "ui.interact"
         }
     ],

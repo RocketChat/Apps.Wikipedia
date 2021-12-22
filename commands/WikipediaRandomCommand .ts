@@ -15,29 +15,31 @@ class WikipediaRandomCommand  {
         const room = context.getRoom();
         const user = context.getSender();
         let text = '';
-        const argsArr = [ ...context.getArguments() ];
 
-        argsArr.shift();
+        try {
+            const argsArr = [ ...context.getArguments() ];
 
-        const wpcode = argsArr.shift();
+            const wpcode = argsArr[1];
 
-        const isValidWpCode = checkIfIsValidWPcodes(wpcode as string);
+            const isValidWpCode = checkIfIsValidWPcodes(wpcode as string);
 
-        if (!isValidWpCode) {
-            text = 'Please, inform a valid wp code';
-            await notifyUser({ app, read, modify, room, user, text });
+            if (!isValidWpCode) {
+                text = 'Please, inform a valid wp code';
+                await notifyUser({ app, read, modify, room, user, text });
+                return;
+            }
 
-            return;
+            const url = `https://${wpcode}.wikipedia.org/api/rest_v1/page/random/summary`;
+
+            const { data: { extract, content_urls: { desktop: page } } } = await http.get(url);
+
+            text = `${extract} \n\n` + `Source: ${page.page}`;
+
+            await sendMessage({ app, read, modify, room, user, text });
+        } catch (error) {
+            text = 'Sorry, something went wrong';
+            await sendMessage({ app, read, modify, room, user, text });
         }
-
-        const url = `https://${wpcode}.wikipedia.org/api/rest_v1/page/random/summary`;
-
-        const { data: { extract, content_urls: { desktop: page } } } = await http.get(url);
-
-        text = `${extract} \n\n` + `Source: ${page}`;
-
-        await sendMessage({ app, read, modify, room, user, text });
-
     }
 }
 

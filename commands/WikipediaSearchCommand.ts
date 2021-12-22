@@ -15,36 +15,46 @@ class WikipediaSearchCommand {
         const room = context.getRoom();
         const user = context.getSender();
         let text = '';
+        let args = '';
 
-        const argsArr = [ ...context.getArguments() ];
+        try {
+            const argsArr = [ ...context.getArguments() ];
 
-        argsArr.shift();
+            argsArr.shift();
 
-        const wpcode = argsArr.shift();
-        const isValidWpCode = checkIfIsValidWPcodes(wpcode as string);
+            const wpcode = argsArr.shift();
+            const isValidWpCode = checkIfIsValidWPcodes(wpcode as string);
 
-        if (!isValidWpCode) {
-            text = 'Please, inform a valid wp code';
-            await notifyUser({ app, read, modify, room, user, text });
-            return;
+            if (!isValidWpCode) {
+                text = 'Please, inform a valid wp code';
+                await notifyUser({ app, read, modify, room, user, text });
+                return;
+            }
+
+            args = argsArr.toString().replace(new RegExp(',', 'g'), '%20');
+
+            if (!(RegExp(/[a-zA-Z]+/, 'u').test(args))) {
+                args = encodeURIComponent(args);
+            }
+
+            const url = `https://${wpcode}.wikipedia.org/api/rest_v1/page/summary/${args}?redirect=true`;
+
+            const { data } = await http.get(url);
+
+            if (data) {
+                text = data.type === 'disambiguation' ?
+                'Please, be more specific' :
+                `${data.extract} \n\n` +
+                `Source: ${data.content_urls.desktop.page}` + args;
+            } else {
+                text = 'Sorry, no results found';
+            }
+
+            await sendMessage({ app, read, modify, room, user, text });
+        } catch (error) {
+            text = 'Sorry, something went wrong';
+            await sendMessage({ app, read, modify, room, user, text });
         }
-
-        const args = argsArr.toString().replace(new RegExp(',', 'g'), '%20');
-
-        const url = `https://${wpcode}.wikipedia.org/api/rest_v1/page/summary/${args}?redirect=true`;
-
-        const { data } = await http.get(url);
-
-        if (data) {
-            text = data.type === 'disambiguation' ?
-            'Please, be more specific' :
-            `${data.extract} \n\n` +
-            `Source: ${data.content_urls.desktop.page}`;
-        } else {
-            text = 'Sorry, no results found';
-        }
-
-        await sendMessage({ app, read, modify, room, user, text });
 
     }
 
