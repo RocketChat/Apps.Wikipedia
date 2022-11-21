@@ -15,7 +15,7 @@ class HelpCommand {
 
         const text =
                 `\`/wikipedia search <wpcodes> <searchinput>\` Shows result content, ex: /wikipedia search en dogs\n ` +
-                `\`/wikipedia random <wpcodes> <searchinput>\` Shows random content, ex: /wikipedia random en\n` +
+                `\`/wikipedia random <wpcodes> \` Shows random content, ex: /wikipedia random en\n` +
                 `\`/wikipedia help\` Shows help message \n` +
                 `You can find the wp codes list by visiting: https://en.wikipedia.org/wiki/List_of_Wikipedias#Editions_overview`;
 
