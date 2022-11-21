@@ -21,8 +21,6 @@ export class WikipediaApp extends App {
     protected async extendConfiguration(configuration: IConfigurationExtend): Promise<void> {
 
         await Promise.all([
-            // Settings
-            Promise.all(settings.map((setting) => configuration.settings.provideSetting(setting))),
             // SlashCommands:
             configuration.slashCommands.provideSlashCommand(new WikipediaCommand(this)),
         ]);

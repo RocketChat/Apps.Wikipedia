@@ -30,7 +30,7 @@ describe("WikipediaRandomCommand", () => {
       "Rocket.chat is an open-source team chat platform. It services include collaboration tools, " +
         "conferences, customer service, and chat features such as inline code snippets with syntax highlighting, " +
         "inline images and formatting support through Markdown. \n\n" +
-        "Source: https://en.wikipedia.org/wiki/Rocket.Chatrocket.chat"
+        "Source: https://en.wikipedia.org/wiki/Rocket.Chat"
     );
   });
 
