@@ -2,11 +2,11 @@ import {
   IHttp,
   IModify,
   IRead,
-} from '@rocket.chat/apps-engine/definition/accessors';
-import { SlashCommandContext } from '@rocket.chat/apps-engine/definition/slashcommands';
-import { checkIfIsValidWPcodes } from '../helper/Util';
-import { notifyUser, sendMessage } from '../lib/message';
-import { WikipediaApp } from '../WikipediaApp';
+} from "@rocket.chat/apps-engine/definition/accessors";
+import { SlashCommandContext } from "@rocket.chat/apps-engine/definition/slashcommands";
+import { checkIfIsValidWPcodes } from "../helper/Util";
+import { notifyUser, sendMessage } from "../lib/message";
+import { WikipediaApp } from "../WikipediaApp";
 
 class WikipediaSearchCommand {
   public async run({
@@ -24,8 +24,8 @@ class WikipediaSearchCommand {
   }): Promise<void> {
     const room = context.getRoom();
     const user = context.getSender();
-    let text = '';
-    let args = '';
+    let text = "";
+    let args = "";
 
     try {
       const argsArr = [...context.getArguments()];
@@ -36,14 +36,14 @@ class WikipediaSearchCommand {
       const isValidWpCode = checkIfIsValidWPcodes(wpcode as string);
 
       if (!isValidWpCode) {
-        text = 'Please, inform a valid wp code';
+        text = "Please, inform a valid wp code";
         await notifyUser({ app, read, modify, room, user, text });
         return;
       }
 
-      args = argsArr.toString().replace(new RegExp(',', 'g'), '%20');
+      args = argsArr.toString().replace(new RegExp(",", "g"), "%20");
 
-      if (!RegExp(/[a-zA-Z]+/, 'u').test(args)) {
+      if (!RegExp(/[a-zA-Z]+/, "u").test(args)) {
         args = encodeURIComponent(args);
       }
 
@@ -53,18 +53,18 @@ class WikipediaSearchCommand {
 
       if (data) {
         text =
-          data.type === 'disambiguation'
-            ? 'Please, be more specific'
+          data.type === "disambiguation"
+            ? "Please, be more specific"
             : `${data.extract} \n\n` +
               `Source: ${data.content_urls.desktop.page}` +
               args;
       } else {
-        text = 'Sorry, no results found';
+        text = "Sorry, no results found";
       }
 
       await sendMessage(read, modify, room, user, text);
     } catch (error) {
-      text = 'Sorry, something went wrong';
+      text = "Sorry, something went wrong";
       await sendMessage(read, modify, room, user, text);
     }
   }
